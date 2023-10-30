@@ -1,0 +1,26 @@
+name: Test Project
+on:
+  push:
+    branches:
+      # This workflow is triggered when a push to dev/<xyz_branch_name> is made
+      - "dev/**"
+jobs:
+  run_test:
+    name: Run tests
+    runs-on: ubuntu-latest
+    steps:
+      # Each step is an action that will get executed during this job run
+      # Checkout code from github repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+      # Install NodeJS v21
+      - name: Install NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 21
+      # Install npm dependencies
+      - name: Install dependencies
+        run: npm ci
+      # Run tests
+      - name: Run tests
+        run: npm run test

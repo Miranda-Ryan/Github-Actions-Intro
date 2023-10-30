@@ -1,0 +1,30 @@
+{
+  "name": "github-actions",
+  "description": "This repository is a collection of notes and demos learned from Academind's <b>Github Actions Crash Course\"</b>.",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^6.3.3"
+  },
+  "scripts": {
+    "test": "jest",
+    "dev": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Miranda-Ryan/Github-Actions-Intro.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Miranda-Ryan/Github-Actions-Intro/issues"
+  },
+  "homepage": "https://github.com/Miranda-Ryan/Github-Actions-Intro#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2"
+  }
+}
