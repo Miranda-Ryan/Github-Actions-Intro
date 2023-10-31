@@ -20,6 +20,13 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 21
+      # Cache node_modules dependencies for other jobs to reuse
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          # Path used by linux runner to store npm modules
+          path: ~/.npm
+          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
       # Install npm dependencies
       - name: Install dependencies
         run: npm ci
@@ -36,9 +43,10 @@ jobs:
       - name: Set unpack variable
         id: set_unpack
         run: echo "can_unpack=true" >> "$GITHUB_OUTPUT"
+      # Display unpack variable
       - name: Display unpack variable
         run: echo "Can next job unpack? ${{ steps.set_unpack.outputs.can_unpack }}"
-
+  
   unpack:
     name: Unpack artifacts
     runs-on: ubuntu-latest
@@ -65,6 +73,11 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 21
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
         run: npm ci
       - name: Deploy
