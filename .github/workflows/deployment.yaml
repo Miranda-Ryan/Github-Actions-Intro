@@ -4,12 +4,13 @@ on:
     branches:
       # This workflow is triggered when a push to dev/<xyz_branch_name> is made
       - "dev/**"
+
 jobs:
   run_test:
     name: Run tests
     runs-on: ubuntu-latest
-    outputs:
-      can_unpack: ${{ steps.set_unpack.outputs.can_unpack }}
+    # outputs:
+    #   can_unpack: ${{ steps.set_unpack.outputs.can_unpack }}
     steps:
       # Each step is an action that will get executed during this job run
       # Checkout code from github repository
@@ -32,28 +33,31 @@ jobs:
         run: npm ci
       # Run tests
       - name: Run tests
+        id: run-tests
         run: npm run test
-      # Upload coverage reports as artifacts
+      # Upload coverage reports as artifacts if tests fail
       - name: Publish coverage reports
+        if: failure() && steps.run-tests.outcome == 'failure'
         uses: actions/upload-artifact@v3
         with:
           name: coverage-report
           path: ./coverage
       # Set an output variable (to be used in later section when working with if())
-      - name: Set unpack variable
-        id: set_unpack
-        run: echo "can_unpack=true" >> "$GITHUB_OUTPUT"
-      # Display unpack variable
-      - name: Display unpack variable
-        run: echo "Can next job unpack? ${{ steps.set_unpack.outputs.can_unpack }}"
-  
+      # - name: Set unpack variable
+      #   id: set_unpack
+      #   run: echo "can_unpack=true" >> "$GITHUB_OUTPUT"
+      # # Display unpack variable
+      # - name: Display unpack variable
+      #   run: echo "Can next job unpack? ${{ steps.set_unpack.outputs.can_unpack }}"
+
   unpack:
     name: Unpack artifacts
     runs-on: ubuntu-latest
     needs: run_test
+    if: failure()
     steps:
-      - name: Display output variable from test job
-        run: echo "${{ needs.run_test.outputs.can_unpack }}"
+      # - name: Display output variable from test job
+      #   run: echo "${{ needs.run_test.outputs.can_unpack }}"
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
