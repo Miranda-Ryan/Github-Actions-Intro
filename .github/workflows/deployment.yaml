@@ -24,6 +24,24 @@ jobs:
       # Run tests
       - name: Run tests
         run: npm run test
+      # Upload coverage reports as artifacts
+      - name: Publish coverage reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: ./coverage
+  
+  unpack:
+    name: Unpack artifacts
+    runs-on: ubuntu-latest
+    needs: run_test
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: coverage-report
+      - name: Display coverage report contents
+        run: ls -R 
 
   deploy:
     name: Deploy
