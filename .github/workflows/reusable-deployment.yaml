@@ -11,6 +11,7 @@ jobs:
   unpack:
     name: Unpack artifacts
     runs-on: ubuntu-latest
+    if: failure()
     steps:
       # - name: Display output variable from test job
       #   run: echo "${{ needs.run_test.outputs.can_unpack }}"
