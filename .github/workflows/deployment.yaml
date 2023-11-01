@@ -35,7 +35,7 @@ jobs:
         run: npm ci
       # Run tests
       - name: Run tests
-        continue-on-error: true
+        continue-on-error: false
         id: run-tests
         run: npm run test
       # Upload coverage reports as artifacts if tests fail
