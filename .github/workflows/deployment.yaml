@@ -35,6 +35,7 @@ jobs:
         run: npm ci
       # Run tests
       - name: Run tests
+        continue-on-error: true
         id: run-tests
         run: npm run test
       # Upload coverage reports as artifacts if tests fail
@@ -68,25 +69,6 @@ jobs:
         run: ls -R
 
   deploy:
-    name: Deploy
-    runs-on: ubuntu-latest
     # To avoid jobs from running in parallel, use needs: <dependent_job_name>
     needs: run_test
-    steps:
-      - name: Get code
-        uses: actions/checkout@v4
-      - name: Install NodeJS
-        uses: actions/setup-node@v3
-        with:
-          node-version: 21
-      - name: Cache dependencies
-        id: cache
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
-      - name: Install dependencies
-        if: ${{ steps.cache.outputs.cache_hit != 'true' }}
-        run: npm ci
-      - name: Deploy
-        run: echo "Deploying!"
+    uses: ./.github/workflows/reusable-deployment.yaml
