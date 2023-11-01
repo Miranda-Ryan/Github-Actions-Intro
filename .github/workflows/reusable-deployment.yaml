@@ -1,26 +1,6 @@
 name: Reusable Deployment
-on: 
-    workflow_call:
-        inputs:
-            artifact-name:
-                description: The name of the report artifact files
-                required: false
-                default: coverage-report
-                type: string
+on: workflow_call
 jobs:
-  unpack:
-    name: Unpack artifacts
-    runs-on: ubuntu-latest
-    steps:
-      # - name: Display output variable from test job
-      #   run: echo "${{ needs.run_test.outputs.can_unpack }}"
-      - name: Download artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: ${{ inputs.artifact-name }}
-      - name: Display coverage report contents
-        run: ls -R
-
   deploy:
     name: Deploy
     runs-on: ubuntu-latest

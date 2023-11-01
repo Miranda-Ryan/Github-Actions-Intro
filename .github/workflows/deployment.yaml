@@ -55,10 +55,11 @@ jobs:
 
   unpack:
     needs: run_test
-    uses: ./.github/workflows/reusable-deployment.yaml
     if: failure()
+    uses: ./.github/workflows/unpack.yaml
 
   deploy:
     # To avoid jobs from running in parallel, use needs: <dependent_job_name>
     needs: run_test
+    if: success()
     uses: ./.github/workflows/reusable-deployment.yaml
