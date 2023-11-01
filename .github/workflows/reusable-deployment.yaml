@@ -1,5 +1,5 @@
 name: Reusable Deployment
-on: [workflow_call]
+on: workflow_call
 jobs:
   deploy:
     name: Deploy
